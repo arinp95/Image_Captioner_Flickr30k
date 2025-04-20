@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Image Captioner</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #e0eafc, #cfdef3);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      width: 100%;
+      padding: 25px 0;
+      background: rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(10px);
+      text-align: center;
+      font-size: 2.5rem;
+      font-weight: 600;
+      color: #1f3c88;
+      box-shadow: 0 4px 30px rgba(0,0,0,0.1);
+    }
+
+    .container {
+      margin: 40px auto;
+      background: rgba(255, 255, 255, 0.35);
+      border-radius: 20px;
+      padding: 30px 40px;
+      box-shadow: 0 8px 32px rgba(31, 38, 135, 0.2);
+      backdrop-filter: blur(12px);
+      width: 90%;
+      max-width: 500px;
+      text-align: center;
+    }
+
+    .upload-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 24px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: white;
+      background: linear-gradient(135deg, #43cea2, #185a9d);
+      background-clip: padding-box;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-bottom: 15px;
+    }
+
+    .upload-label:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    button {
+      padding: 12px 30px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: white;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      background-clip: padding-box;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    #preview {
+      margin-top: 25px;
+      max-width: 100%;
+      max-height: 300px;
+      border-radius: 15px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+      display: none;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .caption {
+      margin-top: 25px;
+      padding: 15px;
+      background-color: rgba(255, 255, 255, 0.5);
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-style: italic;
+      color: #333;
+    }
+
+    footer {
+      margin-top: auto;
+      text-align: center;
+      padding: 20px 0;
+      font-size: 0.95rem;
+      color: #555;
+      background: rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    @media screen and (max-width: 480px) {
+      .container { padding: 20px; }
+      header { font-size: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>Image Captioner</header>
+
+  <div class="container">
+    <form id="upload-form" method="POST" enctype="multipart/form-data" action="{{ url_for('predict') }}">
+      <label for="image-upload" class="upload-label">📤 Upload Image</label>
+      <input type="file" id="image-upload" name="image" accept="image/*" required>
+      <br>
+      <button type="submit">Generate Caption</button>
+    </form>
+
+    <img id="preview" src="#" alt="Image Preview" />
+
+    {% if caption %}
+      <div class="caption">
+        <strong>Caption:</strong> {{ caption }}
+      </div>
+    {% endif %}
+  </div>
+
+  <footer>Copyright © 2025 &nbsp; | &nbsp; Made with ❤️ by <strong>Arindam</strong></footer>
+
+  <script>
+    document.getElementById("image-upload").addEventListener("change", function(event) {
+      const reader = new FileReader();
+      reader.onload = function(){
+        const output = document.getElementById('preview');
+        output.src = reader.result;
+        output.style.display = 'block';
+      };
+      if (event.target.files[0]) {
+        reader.readAsDataURL(event.target.files[0]);
+      }
+    });
+  </script>
+
+</body>
+</html>

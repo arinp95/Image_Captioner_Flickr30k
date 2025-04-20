@@ -1,0 +1,5 @@
+{
+    "python.analysis.extraPaths": [
+    "D:/Programming/Machine Learning/Projects/Image Captioner/venv/Lib/site-packages"
+]
+}
